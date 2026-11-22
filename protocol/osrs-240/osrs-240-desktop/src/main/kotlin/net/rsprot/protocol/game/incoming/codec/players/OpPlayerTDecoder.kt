@@ -14,7 +14,7 @@ public class OpPlayerTDecoder : MessageDecoder<OpPlayerT> {
         val controlKey = buffer.g1Alt2() == 1
         val selectedSub = buffer.g2Alt1()
         val selectedCombinedId = buffer.gCombinedIdAlt2()
-        val selectedObj = buffer.g2Alt1()
+        val selectedObj = buffer.g4()
         val index = buffer.g2Alt3()
         return OpPlayerT(
             index,

@@ -15,8 +15,8 @@ public class IfButtonDDecoder : MessageDecoder<IfButtonD> {
         val targetCombinedId = buffer.gCombinedId()
         val targetSub = buffer.g2()
         val selectedCombinedId = buffer.gCombinedId()
-        val targetObj = buffer.g2Alt2()
-        val selectedObj = buffer.g2Alt3()
+        val targetObj = buffer.g4()
+        val selectedObj = buffer.g4()
         return IfButtonD(
             selectedCombinedId,
             selectedSub,

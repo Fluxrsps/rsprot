@@ -1379,12 +1379,11 @@ public class PlayerAvatarExtendedInfo(
                 "Unexpected wearpos3 $wearpos3, expected value -1 or in range 0..11"
             }
         }
-        val valueAsShort = id.toShort()
         val cur = blocks.appearance.wornObjs[wearpos]
-        if (cur == valueAsShort) {
+        if (cur == id) {
             return
         }
-        blocks.appearance.wornObjs[wearpos] = valueAsShort
+        blocks.appearance.wornObjs[wearpos] = id
         val hiddenSlotsBitpacked = (wearpos2 and 0xF shl 4) or (wearpos3 and 0xF)
         blocks.appearance.hiddenWearPos[wearpos] = hiddenSlotsBitpacked.toByte()
         flagAppearance()
@@ -2108,7 +2107,7 @@ public class PlayerAvatarExtendedInfo(
         private val SIGNED_SHORT_RANGE: IntRange = Short.MIN_VALUE..Short.MAX_VALUE
         private val UNSIGNED_SHORT_RANGE: IntRange = UShort.MIN_VALUE.toInt()..UShort.MAX_VALUE.toInt()
         private val IDENT_KIT_RANGE: IntRange = 0..<(0x800 - 0x100)
-        private val OBJ_RANGE: IntRange = UShort.MIN_VALUE.toInt()..(UShort.MAX_VALUE.toInt() - 0x800)
+        private val OBJ_RANGE: IntRange = 0..(Int.MAX_VALUE - 0x800)
         private val UNSIGNED_SMART_1_OR_2_RANGE: IntRange = 0..0x7FFF
         private val HIT_TYPE_RANGE: IntRange = -1..0x7FFD
         private val HIT_LIMIT_RANGE: IntRange = 1..100

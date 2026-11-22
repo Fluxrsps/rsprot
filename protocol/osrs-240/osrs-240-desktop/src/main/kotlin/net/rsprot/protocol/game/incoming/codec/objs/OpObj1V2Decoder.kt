@@ -14,7 +14,7 @@ public class OpObj1V2Decoder : MessageDecoder<OpObjV2> {
         val x = buffer.g2Alt2()
         val z = buffer.g2Alt3()
         val controlKey = buffer.g1Alt3() == 1
-        val id = buffer.g2()
+        val id = buffer.g4()
         return OpObjV2(
             id,
             x,

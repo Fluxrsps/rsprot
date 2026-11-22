@@ -19,6 +19,6 @@ public class ObjCountEncoder : ZoneProtEncoder<ObjCount> {
         buffer.p1Alt3(message.coordInZonePacked)
         buffer.p4Alt3(message.oldQuantity)
         buffer.p4(message.newQuantity)
-        buffer.p2Alt3(message.id)
+        buffer.p4(message.id)
     }
 }

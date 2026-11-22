@@ -29,10 +29,10 @@ import net.rsprot.protocol.util.CombinedId
 public class IfButtonD private constructor(
     private val _selectedCombinedId: CombinedId,
     private val _selectedSub: UShort,
-    private val _selectedObj: UShort,
+    private val _selectedObj: Int,
     private val _targetCombinedId: CombinedId,
     private val _targetSub: UShort,
-    private val _targetObj: UShort,
+    private val _targetObj: Int,
 ) : IncomingGameMessage {
     public constructor(
         selectedCombinedId: CombinedId,
@@ -44,10 +44,10 @@ public class IfButtonD private constructor(
     ) : this(
         selectedCombinedId,
         selectedSub.toUShort(),
-        selectedObj.toUShort(),
+        selectedObj,
         targetCombinedId,
         targetSub.toUShort(),
-        targetObj.toUShort(),
+        targetObj,
     )
 
     public val selectedCombinedId: Int
@@ -59,7 +59,7 @@ public class IfButtonD private constructor(
     public val selectedSub: Int
         get() = _selectedSub.toIntOrMinusOne()
     public val selectedObj: Int
-        get() = _selectedObj.toIntOrMinusOne()
+        get() = _selectedObj
     public val targetCombinedId: Int
         get() = _targetCombinedId.combinedId
     public val targetInterfaceId: Int
@@ -69,7 +69,7 @@ public class IfButtonD private constructor(
     public val targetSub: Int
         get() = _targetSub.toIntOrMinusOne()
     public val targetObj: Int
-        get() = _targetObj.toIntOrMinusOne()
+        get() = _targetObj
     override val category: ClientProtCategory
         get() = GameClientProtCategory.USER_EVENT
 

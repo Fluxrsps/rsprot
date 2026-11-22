@@ -11,7 +11,7 @@ import net.rsprot.protocol.message.IncomingGameMessage
  * @property z the absolute z coordinate of the obj on the ground
  */
 public class OpObj6 private constructor(
-    private val _id: UShort,
+    private val _id: Int,
     private val _x: UShort,
     private val _z: UShort,
 ) : IncomingGameMessage {
@@ -20,13 +20,13 @@ public class OpObj6 private constructor(
         x: Int,
         z: Int,
     ) : this(
-        id.toUShort(),
+        id,
         x.toUShort(),
         z.toUShort(),
     )
 
     public val id: Int
-        get() = _id.toInt()
+        get() = _id
     public val x: Int
         get() = _x.toInt()
     public val z: Int

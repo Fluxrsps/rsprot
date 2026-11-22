@@ -21,7 +21,7 @@ import net.rsprot.protocol.message.ZoneProt
  * a value in range of 0 to 7 (inclusive) is expected. Any bits outside that are ignored.
  */
 public class ObjCount private constructor(
-    private val _id: UShort,
+    private val _id: Int,
     public val oldQuantity: Int,
     public val newQuantity: Int,
     private val coordInZone: CoordInZone,
@@ -33,14 +33,14 @@ public class ObjCount private constructor(
         xInZone: Int,
         zInZone: Int,
     ) : this(
-        id.toUShort(),
+        id,
         oldQuantity,
         newQuantity,
         CoordInZone(xInZone, zInZone),
     )
 
     public val id: Int
-        get() = _id.toInt()
+        get() = _id
     public val xInZone: Int
         get() = coordInZone.xInZone
     public val zInZone: Int

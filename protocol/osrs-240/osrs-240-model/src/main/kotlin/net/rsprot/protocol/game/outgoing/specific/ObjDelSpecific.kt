@@ -15,21 +15,11 @@ import net.rsprot.protocol.message.OutgoingGameMessage
  * with this quantity, nothing will be deleted.
  * @property coordGrid the absolute coordinate at which the obj is deleted.
  */
-public class ObjDelSpecific private constructor(
-    private val _id: UShort,
+public class ObjDelSpecific(
+    public val id: Int,
     public val quantity: Int,
     public val coordGrid: CoordGrid,
 ) : OutgoingGameMessage {
-    public constructor(
-        id: Int,
-        quantity: Int,
-        coordGrid: CoordGrid,
-    ) : this(
-        id.toUShort(),
-        quantity,
-        coordGrid,
-    )
-
     public constructor(
         id: Int,
         quantity: Int,
@@ -37,13 +27,11 @@ public class ObjDelSpecific private constructor(
         x: Int,
         z: Int,
     ) : this(
-        id.toUShort(),
+        id,
         quantity,
         CoordGrid(level, x, z),
     )
 
-    public val id: Int
-        get() = _id.toInt()
     override val category: ServerProtCategory
         get() = GameServerProtCategory.HIGH_PRIORITY_PROT
 
@@ -53,7 +41,7 @@ public class ObjDelSpecific private constructor(
 
         other as ObjDelSpecific
 
-        if (_id != other._id) return false
+        if (id != other.id) return false
         if (quantity != other.quantity) return false
         if (coordGrid != other.coordGrid) return false
 
@@ -61,7 +49,7 @@ public class ObjDelSpecific private constructor(
     }
 
     override fun hashCode(): Int {
-        var result = _id.hashCode()
+        var result = id.hashCode()
         result = 31 * result + quantity
         result = 31 * result + coordGrid.hashCode()
         return result

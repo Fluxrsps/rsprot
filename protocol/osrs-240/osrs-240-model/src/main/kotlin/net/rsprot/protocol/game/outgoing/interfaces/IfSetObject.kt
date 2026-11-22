@@ -14,9 +14,9 @@ import net.rsprot.protocol.util.CombinedId
  * @property count the count of the obj, used to obtain a different variant
  * of the model of the obj
  */
-public class IfSetObject private constructor(
+public class IfSetObject(
     public val combinedId: Int,
-    private val _obj: UShort,
+    public val obj: Int,
     public val count: Int,
 ) : OutgoingGameMessage {
     public constructor(
@@ -26,17 +26,7 @@ public class IfSetObject private constructor(
         count: Int,
     ) : this(
         CombinedId(interfaceId, componentId).combinedId,
-        obj.toUShort(),
-        count,
-    )
-
-    public constructor(
-        combinedId: Int,
-        obj: Int,
-        count: Int,
-    ) : this(
-        combinedId,
-        obj.toUShort(),
+        obj,
         count,
     )
 
@@ -46,8 +36,6 @@ public class IfSetObject private constructor(
         get() = _combinedId.interfaceId
     public val componentId: Int
         get() = _combinedId.componentId
-    public val obj: Int
-        get() = _obj.toInt()
     override val category: ServerProtCategory
         get() = GameServerProtCategory.LOW_PRIORITY_PROT
 
@@ -58,7 +46,7 @@ public class IfSetObject private constructor(
         other as IfSetObject
 
         if (combinedId != other.combinedId) return false
-        if (_obj != other._obj) return false
+        if (obj != other.obj) return false
         if (count != other.count) return false
 
         return true
@@ -66,7 +54,7 @@ public class IfSetObject private constructor(
 
     override fun hashCode(): Int {
         var result = combinedId.hashCode()
-        result = 31 * result + _obj.hashCode()
+        result = 31 * result + obj.hashCode()
         result = 31 * result + count.hashCode()
         return result
     }

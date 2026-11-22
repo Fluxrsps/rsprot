@@ -30,7 +30,7 @@ import net.rsprot.protocol.message.ZoneProt
  * of value 1-5, all the ops will simply be hidden.
  */
 public class LocAddChangeV2 private constructor(
-    private val _id: UShort,
+    private val _id: Int,
     private val coordInZone: CoordInZone,
     private val locProperties: LocProperties,
     public val opFlags: Byte,
@@ -45,7 +45,7 @@ public class LocAddChangeV2 private constructor(
         opFlags: Byte,
         ops: Map<Byte, String>?,
     ) : this(
-        id.toUShort(),
+        id,
         CoordInZone(xInZone, zInZone),
         LocProperties(shape, rotation),
         opFlags,
@@ -60,7 +60,7 @@ public class LocAddChangeV2 private constructor(
         rotation: Int,
         opFlags: Byte,
     ) : this(
-        id.toUShort(),
+        id,
         CoordInZone(xInZone, zInZone),
         LocProperties(shape, rotation),
         opFlags,
@@ -68,7 +68,7 @@ public class LocAddChangeV2 private constructor(
     )
 
     public val id: Int
-        get() = _id.toInt()
+        get() = _id
     public val xInZone: Int
         get() = coordInZone.xInZone
     public val zInZone: Int

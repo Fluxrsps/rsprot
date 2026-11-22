@@ -13,7 +13,7 @@ public class OpWorldEntityTDecoder : MessageDecoder<OpWorldEntityT> {
     override fun decode(buffer: JagByteBuf): OpWorldEntityT {
         val index = buffer.g2Alt3()
         val selectedSub = buffer.g2Alt2()
-        val selectedObj = buffer.g2()
+        val selectedObj = buffer.g4()
         val selectedCombinedId = buffer.gCombinedId()
         val controlKey = buffer.g1Alt3() == 1
         return OpWorldEntityT(

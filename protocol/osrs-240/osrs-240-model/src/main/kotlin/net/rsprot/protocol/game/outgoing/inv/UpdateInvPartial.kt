@@ -79,10 +79,10 @@ public class UpdateInvPartial private constructor(
 
     override fun estimateSize(): Int {
         // We always assume the worst case here, which would be
-        // 9 bytes per obj added
+        // 11 bytes per obj added (Fluxious: 4-byte obj ids)
         return Int.SIZE_BYTES +
             Short.SIZE_BYTES +
-            (count * 9)
+            (count * 11)
     }
 
     /**

@@ -27,7 +27,7 @@ public class LocAddChangeV2Encoder : ZoneProtEncoder<LocAddChangeV2> {
             }
         }
         buffer.p1(message.coordInZonePacked)
-        buffer.p2Alt2(message.id)
+        buffer.p4(message.id)
         buffer.p1(message.locPropertiesPacked)
     }
 }
