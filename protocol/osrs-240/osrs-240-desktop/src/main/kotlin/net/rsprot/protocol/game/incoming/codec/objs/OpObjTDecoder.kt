@@ -16,8 +16,8 @@ public class OpObjTDecoder : MessageDecoder<OpObjT> {
         val controlKey = buffer.g1Alt3() == 1
         val selectedSub = buffer.g2Alt1()
         val z = buffer.g2Alt3()
-        val id = buffer.g2Alt3()
-        val selectedObj = buffer.g2()
+        val id = buffer.g4()
+        val selectedObj = buffer.g4()
         return OpObjT(
             id,
             x,

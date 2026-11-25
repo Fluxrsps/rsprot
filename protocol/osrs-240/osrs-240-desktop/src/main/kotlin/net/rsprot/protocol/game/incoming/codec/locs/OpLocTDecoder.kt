@@ -13,11 +13,11 @@ public class OpLocTDecoder : MessageDecoder<OpLocT> {
     override fun decode(buffer: JagByteBuf): OpLocT {
         val controlKey = buffer.g1Alt1() == 1
         val x = buffer.g2()
-        val id = buffer.g2()
+        val id = buffer.g4()
         val selectedCombinedId = buffer.gCombinedId()
         val selectedSub = buffer.g2Alt1()
         val z = buffer.g2Alt1()
-        val selectedObj = buffer.g2Alt2()
+        val selectedObj = buffer.g4()
         return OpLocT(
             id,
             x,

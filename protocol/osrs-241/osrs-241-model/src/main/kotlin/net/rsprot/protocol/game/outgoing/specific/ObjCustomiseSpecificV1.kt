@@ -19,7 +19,7 @@ import net.rsprot.protocol.message.toIntOrMinusOne
  * @property coordGrid the absolute coordinate at which the obj is modified.
  */
 public class ObjCustomiseSpecificV1 private constructor(
-    private val _id: UShort,
+    private val _id: Int,
     public val quantity: Int,
     private val _model: UShort,
     private val _recolIndex: Short,
@@ -38,7 +38,7 @@ public class ObjCustomiseSpecificV1 private constructor(
         retex: Int,
         coordGrid: CoordGrid,
     ) : this(
-        id.toUShort(),
+        id,
         quantity,
         model.toUShort(),
         recolIndex.toShort(),
@@ -60,7 +60,7 @@ public class ObjCustomiseSpecificV1 private constructor(
         x: Int,
         z: Int,
     ) : this(
-        id.toUShort(),
+        id,
         quantity,
         model.toUShort(),
         recolIndex.toShort(),
@@ -71,7 +71,7 @@ public class ObjCustomiseSpecificV1 private constructor(
     )
 
     public val id: Int
-        get() = _id.toInt()
+        get() = _id
     public val model: Int
         get() = _model.toIntOrMinusOne()
     public val recolIndex: Int

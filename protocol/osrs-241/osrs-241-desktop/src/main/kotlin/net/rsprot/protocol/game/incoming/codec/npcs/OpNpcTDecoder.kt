@@ -14,7 +14,7 @@ public class OpNpcTDecoder : MessageDecoder<OpNpcT> {
         val selectedCombinedId = buffer.gCombinedIdAlt3()
         val index = buffer.g2()
         val selectedSub = buffer.g2()
-        val selectedObj = buffer.g2Alt2()
+        val selectedObj = buffer.g4()
         val controlKey = buffer.g1Alt2() == 1
         return OpNpcT(
             index,

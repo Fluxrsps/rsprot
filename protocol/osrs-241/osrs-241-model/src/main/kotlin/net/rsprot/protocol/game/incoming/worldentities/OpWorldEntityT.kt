@@ -24,7 +24,7 @@ public class OpWorldEntityT private constructor(
     public val controlKey: Boolean,
     private val _selectedCombinedId: CombinedId,
     private val _selectedSub: UShort,
-    private val _selectedObj: UShort,
+    private val _selectedObj: Int,
 ) : IncomingGameMessage {
     public constructor(
         index: Int,
@@ -37,7 +37,7 @@ public class OpWorldEntityT private constructor(
         controlKey,
         selectedCombinedId,
         selectedSub.toUShort(),
-        selectedObj.toUShort(),
+        selectedObj,
     )
 
     public val index: Int
@@ -51,7 +51,7 @@ public class OpWorldEntityT private constructor(
     public val selectedSub: Int
         get() = _selectedSub.toIntOrMinusOne()
     public val selectedObj: Int
-        get() = _selectedObj.toIntOrMinusOne()
+        get() = _selectedObj
     override val category: ClientProtCategory
         get() = GameClientProtCategory.USER_EVENT
 

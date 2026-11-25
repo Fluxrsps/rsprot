@@ -11,7 +11,7 @@ public class OpObj2V2Decoder : MessageDecoder<OpObjV2> {
 
     override fun decode(buffer: JagByteBuf): OpObjV2 {
         val x = buffer.g2Alt2()
-        val id = buffer.g2()
+        val id = buffer.g4()
         val subop = buffer.g1Alt2()
         val z = buffer.g2Alt2()
         val controlKey = buffer.g1Alt1() == 1

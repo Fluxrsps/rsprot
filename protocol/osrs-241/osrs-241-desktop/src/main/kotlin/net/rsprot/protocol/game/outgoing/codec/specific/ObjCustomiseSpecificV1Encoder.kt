@@ -18,7 +18,7 @@ public class ObjCustomiseSpecificV1Encoder : MessageEncoder<ObjCustomiseSpecific
         // The function at the bottom of the OBJ_CUSTOMISE_SPECIFIC_V1 has a consistent order,
         // making it easy to identify all the properties of this packet:
         // objCustomise(world, level, x, z, id, count, recol, recolIndex, retex, retexIndex, model);
-        buffer.p2Alt1(message.id)
+        buffer.p4(message.id)
         buffer.p4Alt1(message.coordGrid.packed)
         buffer.p4Alt3(message.quantity)
         buffer.p2Alt3(message.recol)

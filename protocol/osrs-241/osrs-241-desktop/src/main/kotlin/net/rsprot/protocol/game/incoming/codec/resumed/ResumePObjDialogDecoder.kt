@@ -12,7 +12,7 @@ public class ResumePObjDialogDecoder : MessageDecoder<ResumePObjDialog> {
     override val prot: ClientProt = GameClientProt.RESUME_P_OBJDIALOG
 
     override fun decode(buffer: JagByteBuf): ResumePObjDialog {
-        val obj = buffer.g2()
+        val obj = buffer.g4()
         return ResumePObjDialog(obj)
     }
 }

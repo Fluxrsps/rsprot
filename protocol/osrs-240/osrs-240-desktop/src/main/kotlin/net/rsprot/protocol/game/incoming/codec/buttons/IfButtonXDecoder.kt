@@ -15,7 +15,7 @@ public class IfButtonXDecoder : MessageDecoder<If3Button> {
     override fun decode(buffer: JagByteBuf): If3Button {
         val combinedId = buffer.gCombinedId()
         val sub = buffer.g2()
-        val obj = buffer.g2()
+        val obj = buffer.g4()
         val op = buffer.g1()
         return If3Button(
             combinedId,

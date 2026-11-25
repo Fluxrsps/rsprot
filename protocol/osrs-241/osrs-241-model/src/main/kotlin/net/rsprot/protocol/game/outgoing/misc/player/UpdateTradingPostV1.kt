@@ -30,7 +30,7 @@ public class UpdateTradingPostV1(
 
                 Byte.SIZE_BYTES +
                     Long.SIZE_BYTES +
-                    Short.SIZE_BYTES +
+                    Int.SIZE_BYTES +
                     Byte.SIZE_BYTES +
                     Short.SIZE_BYTES +
                     (updateType.offers.size * sizePerOffer)
@@ -55,30 +55,17 @@ public class UpdateTradingPostV1(
 
     public data object ResetTradingPost : TradingPostUpdateType
 
-    public class SetTradingPostOfferList private constructor(
+    public class SetTradingPostOfferList(
         public val age: Long,
-        private val _obj: UShort,
+        public val obj: Int,
         public val status: Boolean,
         public val offers: List<TradingPostOffer>,
     ) : TradingPostUpdateType {
-        public constructor(
-            age: Long,
-            obj: Int,
-            status: Boolean,
-            offers: List<TradingPostOffer>,
-        ) : this(
-            age,
-            obj.toUShort(),
-            status,
-            offers,
-        ) {
+        init {
             require(offers.size <= 65535) {
                 "Offers size must fit in an unsigned short"
             }
         }
-
-        public val obj: Int
-            get() = _obj.toInt()
 
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -87,7 +74,7 @@ public class UpdateTradingPostV1(
             other as SetTradingPostOfferList
 
             if (age != other.age) return false
-            if (_obj != other._obj) return false
+            if (obj != other.obj) return false
             if (status != other.status) return false
             if (offers != other.offers) return false
 
@@ -96,7 +83,7 @@ public class UpdateTradingPostV1(
 
         override fun hashCode(): Int {
             var result = age.hashCode()
-            result = 31 * result + _obj.hashCode()
+            result = 31 * result + obj.hashCode()
             result = 31 * result + status.hashCode()
             result = 31 * result + offers.hashCode()
             return result

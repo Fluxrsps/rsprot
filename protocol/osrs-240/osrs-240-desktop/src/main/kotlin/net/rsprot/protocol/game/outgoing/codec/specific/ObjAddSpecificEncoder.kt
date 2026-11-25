@@ -23,7 +23,7 @@ public class ObjAddSpecificEncoder : MessageEncoder<ObjAddSpecific> {
         buffer.p1Alt2(message.opFlags.toInt())
         buffer.p4Alt3(message.coordGrid.packed)
         buffer.p1Alt2(if (message.neverBecomesPublic) 1 else 0)
-        buffer.p2Alt2(message.id)
+        buffer.p4(message.id)
         buffer.p2(message.timeUntilDespawn)
         buffer.p1(message.ownershipType)
         buffer.p2Alt1(message.timeUntilPublic)

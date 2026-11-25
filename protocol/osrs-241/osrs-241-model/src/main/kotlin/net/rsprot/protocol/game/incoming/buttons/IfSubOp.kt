@@ -20,7 +20,7 @@ import net.rsprot.protocol.util.CombinedId
 public class IfSubOp private constructor(
     private val _combinedId: CombinedId,
     private val _sub: UShort,
-    private val _obj: UShort,
+    private val _obj: Int,
     private val _op: UByte,
     private val _subop: UByte,
 ) : IncomingGameMessage {
@@ -33,7 +33,7 @@ public class IfSubOp private constructor(
     ) : this(
         combinedId,
         sub.toUShort(),
-        obj.toUShort(),
+        obj,
         op.toUByte(),
         subop.toUByte(),
     )
@@ -47,7 +47,7 @@ public class IfSubOp private constructor(
     public val sub: Int
         get() = _sub.toIntOrMinusOne()
     public val obj: Int
-        get() = _obj.toIntOrMinusOne()
+        get() = _obj
     public val op: Int
         get() = _op.toInt()
     public val subop: Int

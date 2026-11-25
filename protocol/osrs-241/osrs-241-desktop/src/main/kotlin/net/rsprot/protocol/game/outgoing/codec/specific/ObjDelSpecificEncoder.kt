@@ -20,6 +20,6 @@ public class ObjDelSpecificEncoder : MessageEncoder<ObjDelSpecific> {
         // obj_del(world, level, x, z, id, quantity)
         buffer.p4Alt3(message.quantity)
         buffer.p4Alt1(message.coordGrid.packed)
-        buffer.p2Alt3(message.id)
+        buffer.p4(message.id)
     }
 }

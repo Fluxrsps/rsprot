@@ -21,7 +21,7 @@ public class LocMergeEncoder : ZoneProtEncoder<LocMerge> {
         buffer.p2Alt1(message.index)
         buffer.p2Alt3(message.start)
         buffer.p1Alt3(message.maxX)
-        buffer.p2Alt3(message.id)
+        buffer.p4(message.id)
         buffer.p1Alt1(message.minZ)
     }
 }

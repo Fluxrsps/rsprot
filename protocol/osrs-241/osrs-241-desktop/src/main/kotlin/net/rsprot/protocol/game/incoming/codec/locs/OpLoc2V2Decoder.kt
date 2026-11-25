@@ -12,7 +12,7 @@ public class OpLoc2V2Decoder : MessageDecoder<OpLocV2> {
     override fun decode(buffer: JagByteBuf): OpLocV2 {
         val controlKey = buffer.g1Alt3() == 1
         val z = buffer.g2()
-        val id = buffer.g2Alt2()
+        val id = buffer.g4()
         val subop = buffer.g1Alt2()
         val x = buffer.g2()
         return OpLocV2(

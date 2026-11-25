@@ -73,7 +73,7 @@ public class Appearance(
     /**
      * The worn obj ids, indexed by the respective wearpos.
      */
-    public val wornObjs: ShortArray = ShortArray(SLOT_COUNT) { -1 }
+    public val wornObjs: IntArray = IntArray(SLOT_COUNT) { -1 }
 
     /**
      * The secondary and tertiary wearpos that the primary wearpos

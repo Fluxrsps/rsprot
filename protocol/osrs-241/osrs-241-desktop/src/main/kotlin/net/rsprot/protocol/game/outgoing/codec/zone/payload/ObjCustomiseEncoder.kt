@@ -17,7 +17,7 @@ public class ObjCustomiseEncoder : ZoneProtEncoder<ObjCustomise> {
         // making it easy to identify all the properties of this packet:
         // objCustomise(level, x, z, id, count, recol, recolIndex, retex, retexIndex, model);
         buffer.p1Alt2(message.coordInZonePacked)
-        buffer.p2Alt3(message.id)
+        buffer.p4(message.id)
         buffer.p2(message.recolIndex)
         buffer.p4Alt2(message.quantity)
         buffer.p2(message.model)

@@ -15,7 +15,7 @@ public class IfSubOpDecoder : MessageDecoder<IfSubOp> {
     override fun decode(buffer: JagByteBuf): IfSubOp {
         val combinedId = buffer.gCombinedId()
         val sub = buffer.g2()
-        val obj = buffer.g2()
+        val obj = buffer.g4()
         val op = buffer.g1()
         val subop = buffer.g1()
         return IfSubOp(

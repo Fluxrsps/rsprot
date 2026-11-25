@@ -37,7 +37,7 @@ import net.rsprot.protocol.message.ZoneProt
 @Suppress("DuplicatedCode")
 public class LocMerge private constructor(
     private val _index: UShort,
-    private val _id: UShort,
+    private val _id: Int,
     private val coordInZone: CoordInZone,
     private val locProperties: LocProperties,
     private val _start: UShort,
@@ -62,7 +62,7 @@ public class LocMerge private constructor(
         maxZ: Int,
     ) : this(
         index.toUShort(),
-        id.toUShort(),
+        id,
         CoordInZone(xInZone, zInZone),
         LocProperties(shape, rotation),
         start.toUShort(),
@@ -76,7 +76,7 @@ public class LocMerge private constructor(
     public val index: Int
         get() = _index.toInt()
     public val id: Int
-        get() = _id.toInt()
+        get() = _id
     public val xInZone: Int
         get() = coordInZone.xInZone
     public val zInZone: Int

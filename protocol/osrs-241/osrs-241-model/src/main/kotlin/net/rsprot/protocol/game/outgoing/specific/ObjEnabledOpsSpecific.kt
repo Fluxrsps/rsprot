@@ -16,21 +16,11 @@ import net.rsprot.protocol.message.OutgoingGameMessage
  * bitpacked values which can be passed into it.
  * @property coordGrid the absolute coordinate at which the obj is modified.
  */
-public class ObjEnabledOpsSpecific private constructor(
-    private val _id: UShort,
+public class ObjEnabledOpsSpecific(
+    public val id: Int,
     public val opFlags: Byte,
     public val coordGrid: CoordGrid,
 ) : OutgoingGameMessage {
-    public constructor(
-        id: Int,
-        opFlags: Byte,
-        coordGrid: CoordGrid,
-    ) : this(
-        id.toUShort(),
-        opFlags,
-        coordGrid,
-    )
-
     public constructor(
         id: Int,
         opFlags: Byte,
@@ -38,13 +28,11 @@ public class ObjEnabledOpsSpecific private constructor(
         x: Int,
         z: Int,
     ) : this(
-        id.toUShort(),
+        id,
         opFlags,
         CoordGrid(level, x, z),
     )
 
-    public val id: Int
-        get() = _id.toInt()
     override val category: ServerProtCategory
         get() = GameServerProtCategory.HIGH_PRIORITY_PROT
 
@@ -54,7 +42,7 @@ public class ObjEnabledOpsSpecific private constructor(
 
         other as ObjEnabledOpsSpecific
 
-        if (_id != other._id) return false
+        if (id != other.id) return false
         if (opFlags != other.opFlags) return false
         if (coordGrid != other.coordGrid) return false
 
@@ -62,7 +50,7 @@ public class ObjEnabledOpsSpecific private constructor(
     }
 
     override fun hashCode(): Int {
-        var result = _id.hashCode()
+        var result = id.hashCode()
         result = 31 * result + opFlags.hashCode()
         result = 31 * result + coordGrid.hashCode()
         return result

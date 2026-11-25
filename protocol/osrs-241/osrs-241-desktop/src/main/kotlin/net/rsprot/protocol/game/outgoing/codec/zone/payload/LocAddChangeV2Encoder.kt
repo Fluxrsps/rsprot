@@ -28,6 +28,6 @@ public class LocAddChangeV2Encoder : ZoneProtEncoder<LocAddChangeV2> {
                 buffer.pjstr(value)
             }
         }
-        buffer.p2(message.id)
+        buffer.p4(message.id)
     }
 }

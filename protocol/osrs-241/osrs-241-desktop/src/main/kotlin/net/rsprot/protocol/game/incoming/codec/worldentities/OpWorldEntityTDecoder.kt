@@ -11,7 +11,7 @@ public class OpWorldEntityTDecoder : MessageDecoder<OpWorldEntityT> {
     override val prot: ClientProt = GameClientProt.OPWORLDENTITYT
 
     override fun decode(buffer: JagByteBuf): OpWorldEntityT {
-        val selectedObj = buffer.g2()
+        val selectedObj = buffer.g4()
         val controlKey = buffer.g1() == 1
         val selectedCombinedId = buffer.gCombinedId()
         val index = buffer.g2()

@@ -16,8 +16,8 @@ import net.rsprot.protocol.message.OutgoingGameMessage
  * @property newQuantity the new quantity to be set to this obj
  * @property coordGrid the absolute coordinate at which the obj is modified.
  */
-public class ObjCountSpecific private constructor(
-    private val _id: UShort,
+public class ObjCountSpecific(
+    public val id: Int,
     public val oldQuantity: Int,
     public val newQuantity: Int,
     public val coordGrid: CoordGrid,
@@ -26,30 +26,16 @@ public class ObjCountSpecific private constructor(
         id: Int,
         oldQuantity: Int,
         newQuantity: Int,
-        coordGrid: CoordGrid,
-    ) : this(
-        id.toUShort(),
-        oldQuantity,
-        newQuantity,
-        coordGrid,
-    )
-
-    public constructor(
-        id: Int,
-        oldQuantity: Int,
-        newQuantity: Int,
         level: Int,
         x: Int,
         z: Int,
     ) : this(
-        id.toUShort(),
+        id,
         oldQuantity,
         newQuantity,
         CoordGrid(level, x, z),
     )
 
-    public val id: Int
-        get() = _id.toInt()
     override val category: ServerProtCategory
         get() = GameServerProtCategory.HIGH_PRIORITY_PROT
 
@@ -59,7 +45,7 @@ public class ObjCountSpecific private constructor(
 
         other as ObjCountSpecific
 
-        if (_id != other._id) return false
+        if (id != other.id) return false
         if (oldQuantity != other.oldQuantity) return false
         if (newQuantity != other.newQuantity) return false
         if (coordGrid != other.coordGrid) return false
@@ -68,7 +54,7 @@ public class ObjCountSpecific private constructor(
     }
 
     override fun hashCode(): Int {
-        var result = _id.hashCode()
+        var result = id.hashCode()
         result = 31 * result + oldQuantity
         result = 31 * result + newQuantity
         result = 31 * result + coordGrid.hashCode()

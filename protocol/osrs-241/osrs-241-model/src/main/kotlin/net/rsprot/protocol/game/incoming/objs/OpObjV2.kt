@@ -16,7 +16,7 @@ import net.rsprot.protocol.message.IncomingGameMessage
  */
 @Suppress("DuplicatedCode", "MemberVisibilityCanBePrivate")
 public class OpObjV2 private constructor(
-    private val _id: UShort,
+    private val _id: Int,
     private val _x: UShort,
     private val _z: UShort,
     public val controlKey: Boolean,
@@ -31,7 +31,7 @@ public class OpObjV2 private constructor(
         op: Int,
         subop: Int,
     ) : this(
-        id.toUShort(),
+        id,
         x.toUShort(),
         z.toUShort(),
         controlKey,
@@ -40,7 +40,7 @@ public class OpObjV2 private constructor(
     )
 
     public val id: Int
-        get() = _id.toInt()
+        get() = _id
     public val x: Int
         get() = _x.toInt()
     public val z: Int

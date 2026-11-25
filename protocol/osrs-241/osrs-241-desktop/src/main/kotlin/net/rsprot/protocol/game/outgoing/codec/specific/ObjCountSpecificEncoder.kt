@@ -21,6 +21,6 @@ public class ObjCountSpecificEncoder : MessageEncoder<ObjCountSpecific> {
         buffer.p4Alt1(message.newQuantity)
         buffer.p4Alt3(message.oldQuantity)
         buffer.p4Alt2(message.coordGrid.packed)
-        buffer.p2Alt3(message.id)
+        buffer.p4(message.id)
     }
 }

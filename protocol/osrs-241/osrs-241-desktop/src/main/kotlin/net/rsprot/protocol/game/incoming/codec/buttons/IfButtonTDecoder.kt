@@ -13,9 +13,9 @@ public class IfButtonTDecoder : MessageDecoder<IfButtonT> {
 
     override fun decode(buffer: JagByteBuf): IfButtonT {
         val targetCombinedId = buffer.gCombinedIdAlt1()
-        val selectedObj = buffer.g2Alt3()
+        val selectedObj = buffer.g4()
         val selectedCombinedId = buffer.gCombinedIdAlt2()
-        val targetObj = buffer.g2Alt3()
+        val targetObj = buffer.g4()
         val targetSub = buffer.g2()
         val selectedSub = buffer.g2Alt3()
         return IfButtonT(

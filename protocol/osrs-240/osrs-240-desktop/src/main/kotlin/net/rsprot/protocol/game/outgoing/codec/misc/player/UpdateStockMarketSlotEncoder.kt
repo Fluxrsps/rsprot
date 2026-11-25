@@ -21,11 +21,11 @@ public class UpdateStockMarketSlotEncoder : MessageEncoder<UpdateStockMarketSlot
         when (val update = message.update) {
             UpdateStockMarketSlot.ResetStockMarketSlot -> {
                 buffer.p1(0)
-                buffer.skipWrite(18)
+                buffer.skipWrite(20)
             }
             is UpdateStockMarketSlot.SetStockMarketSlot -> {
                 buffer.p1(update.status)
-                buffer.p2(update.obj)
+                buffer.p4(update.obj)
                 buffer.p4(update.price)
                 buffer.p4(update.count)
                 buffer.p4(update.completedCount)

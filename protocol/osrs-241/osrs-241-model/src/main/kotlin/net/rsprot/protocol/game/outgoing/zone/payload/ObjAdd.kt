@@ -39,7 +39,7 @@ import net.rsprot.protocol.message.ZoneProt
  */
 @Suppress("DuplicatedCode")
 public class ObjAdd private constructor(
-    private val _id: UShort,
+    private val _id: Int,
     public val quantity: Int,
     private val coordInZone: CoordInZone,
     public val opFlags: Byte,
@@ -59,7 +59,7 @@ public class ObjAdd private constructor(
         ownershipType: Int,
         neverBecomesPublic: Boolean,
     ) : this(
-        id.toUShort(),
+        id,
         quantity,
         CoordInZone(xInZone, zInZone),
         opFlags,
@@ -93,7 +93,7 @@ public class ObjAdd private constructor(
     )
 
     public val id: Int
-        get() = _id.toInt()
+        get() = _id
     public val xInZone: Int
         get() = coordInZone.xInZone
     public val zInZone: Int

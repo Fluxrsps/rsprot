@@ -14,7 +14,7 @@ public class OpLoc5V2Decoder : MessageDecoder<OpLocV2> {
         val x = buffer.g2()
         val subop = buffer.g1Alt1()
         val controlKey = buffer.g1Alt3() == 1
-        val id = buffer.g2Alt3()
+        val id = buffer.g4()
         return OpLocV2(
             id,
             x,

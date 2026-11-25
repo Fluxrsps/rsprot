@@ -51,7 +51,7 @@ public class PlayerAppearanceEncoder : PrecomputedExtendedInfoEncoder<Appearance
         intermediate: JagByteBuf,
         extendedInfo: Appearance,
     ) {
-        intermediate.p2(-1)
+        intermediate.p4(WORN_SLOT_FLAG or 0xFFFF)
         intermediate.p2(extendedInfo.transformedNpcId.toInt())
     }
 
@@ -83,9 +83,9 @@ public class PlayerAppearanceEncoder : PrecomputedExtendedInfoEncoder<Appearance
                 intermediate.p1(0)
                 continue
             }
-            val obj = objs[wearpos].toInt() and 0xFFFF
-            if (obj != 0xFFFF) {
-                intermediate.p2(obj + 0x800)
+            val obj = objs[wearpos]
+            if (obj != -1) {
+                intermediate.p4(WORN_SLOT_FLAG or (obj + 0x800))
                 continue
             }
             val identKitSlot = Appearance.identKitSlotList[wearpos]
@@ -97,7 +97,7 @@ public class PlayerAppearanceEncoder : PrecomputedExtendedInfoEncoder<Appearance
             if (identKitValue == 0xFFFF) {
                 intermediate.p1(0)
             } else {
-                intermediate.p2(identKitValue + 0x100)
+                intermediate.p4(WORN_SLOT_FLAG or (identKitValue + 0x100))
             }
         }
     }
@@ -242,5 +242,15 @@ public class PlayerAppearanceEncoder : PrecomputedExtendedInfoEncoder<Appearance
     ) {
         intermediate.p4(customisation.manHead)
         intermediate.p4(customisation.womanHead)
+    }
+
+    private companion object {
+        /**
+         * Fluxious protocol (FluxiousClient docs/rs3-namespace.md, "Obj ids on the wire"): a non-empty worn
+         * slot is a p4 with bit 31 set, so its first byte is never 0 and the client tells it apart from the
+         * u8 0 of an empty slot. The low 31 bits keep the stock meaning (256-2047 ident kit + 0x100,
+         * >= 2048 obj + 0x800, 0xFFFF in slot 0 = npc transmog, followed by a u16 npc id).
+         */
+        private const val WORN_SLOT_FLAG: Int = 1 shl 31
     }
 }

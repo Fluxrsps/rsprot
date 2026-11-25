@@ -26,10 +26,10 @@ public class UpdateInvPartialEncoder : MessageEncoder<UpdateInvPartial> {
             buffer.pSmart1or2(InventoryObject.getSlot(obj))
             val id = InventoryObject.getId(obj)
             if (id == -1) {
-                buffer.p2(0)
+                buffer.p4(0)
                 continue
             }
-            buffer.p2(id + 1)
+            buffer.p4(id + 1)
             val count = InventoryObject.getCount(obj)
             buffer.p1(count.coerceAtMost(0xFF))
             if (count >= 0xFF) {

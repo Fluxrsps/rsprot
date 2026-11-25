@@ -21,7 +21,7 @@ public class ObjCustomiseSpecificEncoder : MessageEncoder<ObjCustomiseSpecific> 
         buffer.p4Alt3(message.coordGrid.packed)
         buffer.p2Alt1(message.recolIndex)
         buffer.p2Alt3(message.model)
-        buffer.p2Alt3(message.id)
+        buffer.p4(message.id)
         buffer.p2Alt1(message.retexIndex)
         buffer.p4(message.quantity)
         buffer.p2Alt3(message.recol)

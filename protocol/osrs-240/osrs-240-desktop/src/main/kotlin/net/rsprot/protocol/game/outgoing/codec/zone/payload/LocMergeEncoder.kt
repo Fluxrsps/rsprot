@@ -17,7 +17,7 @@ public class LocMergeEncoder : ZoneProtEncoder<LocMerge> {
         // making it easy to identify all the properties of this packet:
         // loc_merge(level, x, z, shape, rotation, layer, id, start, end, minX, minZ, maxX, maxZ, player)
         buffer.p1(message.minZ)
-        buffer.p2Alt3(message.id)
+        buffer.p4(message.id)
         buffer.p2(message.end)
         buffer.p1Alt2(message.locPropertiesPacked)
         buffer.p2Alt3(message.start)

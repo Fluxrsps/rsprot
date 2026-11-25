@@ -19,7 +19,7 @@ public class ObjAddSpecificEncoder : MessageEncoder<ObjAddSpecific> {
         // making it easy to identify all the properties of this packet:
         // obj_add(world, level, x, z, id, quantity, opFlags,
         // timeUntilPublic, timeUntilDespawn, ownershipType, neverBecomesPublic);
-        buffer.p2(message.id)
+        buffer.p4(message.id)
         buffer.p2Alt3(message.timeUntilPublic)
         buffer.p1Alt2(message.ownershipType)
         buffer.p4Alt2(message.quantity)

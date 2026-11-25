@@ -20,7 +20,7 @@ import net.rsprot.protocol.util.CombinedId
 public class If3Button private constructor(
     private val _combinedId: CombinedId,
     private val _sub: UShort,
-    private val _obj: UShort,
+    private val _obj: Int,
     private val _op: UByte,
 ) : IncomingGameMessage {
     public constructor(
@@ -31,7 +31,7 @@ public class If3Button private constructor(
     ) : this(
         combinedId,
         sub.toUShort(),
-        obj.toUShort(),
+        obj,
         op.toUByte(),
     )
 
@@ -44,7 +44,7 @@ public class If3Button private constructor(
     public val sub: Int
         get() = _sub.toIntOrMinusOne()
     public val obj: Int
-        get() = _obj.toIntOrMinusOne()
+        get() = _obj
     public val op: Int
         get() = _op.toInt()
     override val category: ClientProtCategory

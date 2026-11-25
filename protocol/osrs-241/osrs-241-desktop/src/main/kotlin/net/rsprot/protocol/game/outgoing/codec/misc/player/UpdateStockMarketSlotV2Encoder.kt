@@ -28,17 +28,18 @@ public class UpdateStockMarketSlotV2Encoder : MessageEncoder<UpdateStockMarketSl
                 buffer.p1(0x7)
                 buffer.p1(2)
                 buffer.p1(update.status)
-                buffer.p2(update.obj)
+                buffer.p4(update.obj)
                 buffer.p8(update.price)
                 buffer.p4(update.count)
                 buffer.p4(update.completedCount)
                 buffer.p8(update.completedGold)
-                buffer.p4(0) // No extension: the complete packet occupies exactly 34 bytes.
+                buffer.p4(0) // No extension: the complete packet occupies exactly 36 bytes.
             }
         }
     }
 
     private companion object {
-        private val EMPTY_PAYLOAD: ByteArray = ByteArray(31)
+        // Fluxious: 2 bytes longer, the obj id is a p4
+        private val EMPTY_PAYLOAD: ByteArray = ByteArray(33)
     }
 }

@@ -20,6 +20,6 @@ public class ObjEnabledOpsSpecificEncoder : MessageEncoder<ObjEnabledOpsSpecific
         // obj_enabledops(world, level, x, z, id, opFlags)
         buffer.p1Alt3(message.opFlags.toInt())
         buffer.p4(message.coordGrid.packed)
-        buffer.p2(message.id)
+        buffer.p4(message.id)
     }
 }

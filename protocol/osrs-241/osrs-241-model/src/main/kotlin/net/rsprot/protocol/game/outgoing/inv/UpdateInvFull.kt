@@ -99,7 +99,7 @@ public class UpdateInvFull private constructor(
         return Int.SIZE_BYTES +
             Short.SIZE_BYTES +
             Short.SIZE_BYTES +
-            (capacity * 7)
+            (capacity * 9)
     }
 
     /**

@@ -25,7 +25,7 @@ public class UpdateInvFullEncoder : MessageEncoder<UpdateInvFull> {
             val obj = message.getObject(i)
             if (obj == InventoryObject.NULL) {
                 buffer.p1Alt3(0)
-                buffer.p2(0)
+                buffer.p4(0)
                 continue
             }
             val count = InventoryObject.getCount(obj)
@@ -33,7 +33,7 @@ public class UpdateInvFullEncoder : MessageEncoder<UpdateInvFull> {
             if (count >= 255) {
                 buffer.p4(count)
             }
-            buffer.p2(InventoryObject.getId(obj) + 1)
+            buffer.p4(InventoryObject.getId(obj) + 1)
         }
         message.returnInventory()
     }

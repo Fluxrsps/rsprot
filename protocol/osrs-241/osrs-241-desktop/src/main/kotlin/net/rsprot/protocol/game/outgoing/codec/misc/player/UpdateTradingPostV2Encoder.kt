@@ -24,7 +24,7 @@ public class UpdateTradingPostV2Encoder : MessageEncoder<UpdateTradingPostV2> {
             is UpdateTradingPostV2.SetTradingPostOfferList -> {
                 buffer.p1(1)
                 buffer.p8(update.age)
-                buffer.p2(update.obj)
+                buffer.p4(update.obj)
                 buffer.p1(if (update.status) 1 else 0)
                 val offers = update.offers
                 buffer.p2(offers.size)

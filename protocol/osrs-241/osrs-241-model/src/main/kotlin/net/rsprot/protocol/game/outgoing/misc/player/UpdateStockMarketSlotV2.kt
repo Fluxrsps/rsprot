@@ -64,7 +64,7 @@ public class UpdateStockMarketSlotV2 private constructor(
      */
     public class SetStockMarketSlot private constructor(
         private val _status: Byte,
-        private val _obj: UShort,
+        private val _obj: Int,
         public val price: Long,
         public val count: Int,
         public val completedCount: Int,
@@ -79,7 +79,7 @@ public class UpdateStockMarketSlotV2 private constructor(
             completedGold: Long,
         ) : this(
             status.toByte(),
-            obj.toUShort(),
+            obj,
             price,
             count,
             completedCount,
@@ -89,7 +89,7 @@ public class UpdateStockMarketSlotV2 private constructor(
         public val status: Int
             get() = _status.toInt()
         public val obj: Int
-            get() = _obj.toInt()
+            get() = _obj
 
         override fun equals(other: Any?): Boolean {
             if (this === other) return true

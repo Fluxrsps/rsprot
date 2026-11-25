@@ -9,10 +9,10 @@ public enum class GameClientProt(
 ) : ClientProt {
     // If buttons
     IF_BUTTON(GameClientProtId.IF_BUTTON, 4),
-    IF_BUTTONX(GameClientProtId.IF_BUTTONX, 9),
-    IF_SUBOP(GameClientProtId.IF_SUBOP, 10),
-    IF_BUTTOND(GameClientProtId.IF_BUTTOND, 16),
-    IF_BUTTONT(GameClientProtId.IF_BUTTONT, 16),
+    IF_BUTTONX(GameClientProtId.IF_BUTTONX, 11),
+    IF_SUBOP(GameClientProtId.IF_SUBOP, 12),
+    IF_BUTTOND(GameClientProtId.IF_BUTTOND, 20),
+    IF_BUTTONT(GameClientProtId.IF_BUTTONT, 20),
     IF_SCRIPT_TRIGGER(GameClientProtId.IF_SCRIPT_TRIGGER, Prot.VAR_SHORT),
 
     // Op npc
@@ -22,7 +22,7 @@ public enum class GameClientProt(
     OPNPC4_V2(GameClientProtId.OPNPC4_V2, 4),
     OPNPC5_V2(GameClientProtId.OPNPC5_V2, 4),
     OPNPC6(GameClientProtId.OPNPC6, 2),
-    OPNPCT(GameClientProtId.OPNPCT, 11),
+    OPNPCT(GameClientProtId.OPNPCT, 13),
 
     @Deprecated(
         "Deprecated since inventory rework in revision 204, " +
@@ -32,13 +32,13 @@ public enum class GameClientProt(
     OPNPCU(GameClientProtId.OPNPCU, 11),
 
     // Op loc
-    OPLOC1_V2(GameClientProtId.OPLOC1_V2, 8),
-    OPLOC2_V2(GameClientProtId.OPLOC2_V2, 8),
-    OPLOC3_V2(GameClientProtId.OPLOC3_V2, 8),
-    OPLOC4_V2(GameClientProtId.OPLOC4_V2, 8),
-    OPLOC5_V2(GameClientProtId.OPLOC5_V2, 8),
-    OPLOC6(GameClientProtId.OPLOC6, 2),
-    OPLOCT(GameClientProtId.OPLOCT, 15),
+    OPLOC1_V2(GameClientProtId.OPLOC1_V2, 10),
+    OPLOC2_V2(GameClientProtId.OPLOC2_V2, 10),
+    OPLOC3_V2(GameClientProtId.OPLOC3_V2, 10),
+    OPLOC4_V2(GameClientProtId.OPLOC4_V2, 10),
+    OPLOC5_V2(GameClientProtId.OPLOC5_V2, 10),
+    OPLOC6(GameClientProtId.OPLOC6, 4),
+    OPLOCT(GameClientProtId.OPLOCT, 19),
 
     @Deprecated(
         "Deprecated since inventory rework in revision 204, " +
@@ -48,13 +48,13 @@ public enum class GameClientProt(
     OPLOCU(GameClientProtId.OPLOCU, 15),
 
     // Op obj
-    OPOBJ1_V2(GameClientProtId.OPOBJ1_V2, 8),
-    OPOBJ2_V2(GameClientProtId.OPOBJ2_V2, 8),
-    OPOBJ3_V2(GameClientProtId.OPOBJ3_V2, 8),
-    OPOBJ4_V2(GameClientProtId.OPOBJ4_V2, 8),
-    OPOBJ5_V2(GameClientProtId.OPOBJ5_V2, 8),
-    OPOBJ6(GameClientProtId.OPOBJ6, 6),
-    OPOBJT(GameClientProtId.OPOBJT, 15),
+    OPOBJ1_V2(GameClientProtId.OPOBJ1_V2, 10),
+    OPOBJ2_V2(GameClientProtId.OPOBJ2_V2, 10),
+    OPOBJ3_V2(GameClientProtId.OPOBJ3_V2, 10),
+    OPOBJ4_V2(GameClientProtId.OPOBJ4_V2, 10),
+    OPOBJ5_V2(GameClientProtId.OPOBJ5_V2, 10),
+    OPOBJ6(GameClientProtId.OPOBJ6, 8),
+    OPOBJT(GameClientProtId.OPOBJT, 19),
 
     @Deprecated(
         "Deprecated since inventory rework in revision 204, " +
@@ -72,7 +72,7 @@ public enum class GameClientProt(
     OPPLAYER6(GameClientProtId.OPPLAYER6, 3),
     OPPLAYER7(GameClientProtId.OPPLAYER7, 3),
     OPPLAYER8(GameClientProtId.OPPLAYER8, 3),
-    OPPLAYERT(GameClientProtId.OPPLAYERT, 11),
+    OPPLAYERT(GameClientProtId.OPPLAYERT, 13),
 
     @Deprecated(
         "Deprecated since inventory rework in revision 204, " +
@@ -87,7 +87,7 @@ public enum class GameClientProt(
     OPWORLDENTITY4(GameClientProtId.OPWORLDENTITY4, 3),
     OPWORLDENTITY5(GameClientProtId.OPWORLDENTITY5, 3),
     OPWORLDENTITY6(GameClientProtId.OPWORLDENTITY6, 2),
-    OPWORLDENTITYT(GameClientProtId.OPWORLDENTITYT, 11),
+    OPWORLDENTITYT(GameClientProtId.OPWORLDENTITYT, 13),
 
     @Deprecated(
         "Deprecated since inventory rework in revision 204, " +
@@ -112,7 +112,7 @@ public enum class GameClientProt(
     RESUME_P_STRINGDIALOG(GameClientProtId.RESUME_P_STRINGDIALOG, Prot.VAR_BYTE),
     RESUME_P_COUNTDIALOG(GameClientProtId.RESUME_P_COUNTDIALOG, 4),
     RESUME_P_LONGDIALOG(GameClientProtId.RESUME_P_LONGDIALOG, 8),
-    RESUME_P_OBJDIALOG(GameClientProtId.RESUME_P_OBJDIALOG, 2),
+    RESUME_P_OBJDIALOG(GameClientProtId.RESUME_P_OBJDIALOG, 4),
 
     // Friend chat packets
     FRIENDCHAT_KICK(GameClientProtId.FRIENDCHAT_KICK, Prot.VAR_BYTE),

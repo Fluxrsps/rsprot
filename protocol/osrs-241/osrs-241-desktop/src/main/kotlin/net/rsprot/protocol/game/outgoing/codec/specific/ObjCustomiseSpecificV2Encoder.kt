@@ -16,7 +16,7 @@ public class ObjCustomiseSpecificV2Encoder : MessageEncoder<ObjCustomiseSpecific
         message: ObjCustomiseSpecificV2,
     ) {
         buffer.p4(message.coordGrid.packed)
-        buffer.p2Alt3(message.id)
+        buffer.p4(message.id)
         buffer.p2Alt3(message.model)
         buffer.p1Alt3(message.retextures.size)
         for ((index, value) in message.retextures) {

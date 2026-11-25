@@ -22,13 +22,13 @@ import net.rsprot.protocol.util.CombinedId
  */
 @Suppress("DuplicatedCode", "MemberVisibilityCanBePrivate")
 public class OpObjT private constructor(
-    private val _id: UShort,
+    private val _id: Int,
     private val _x: UShort,
     private val _z: UShort,
     public val controlKey: Boolean,
     private val _selectedCombinedId: CombinedId,
     private val _selectedSub: UShort,
-    private val _selectedObj: UShort,
+    private val _selectedObj: Int,
 ) : IncomingGameMessage {
     public constructor(
         id: Int,
@@ -39,17 +39,17 @@ public class OpObjT private constructor(
         selectedSub: Int,
         selectedObj: Int,
     ) : this(
-        id.toUShort(),
+        id,
         x.toUShort(),
         z.toUShort(),
         controlKey,
         selectedCombinedId,
         selectedSub.toUShort(),
-        selectedObj.toUShort(),
+        selectedObj,
     )
 
     public val id: Int
-        get() = _id.toInt()
+        get() = _id
     public val x: Int
         get() = _x.toInt()
     public val z: Int
@@ -63,7 +63,7 @@ public class OpObjT private constructor(
     public val selectedSub: Int
         get() = _selectedSub.toIntOrMinusOne()
     public val selectedObj: Int
-        get() = _selectedObj.toIntOrMinusOne()
+        get() = _selectedObj
     override val category: ClientProtCategory
         get() = GameClientProtCategory.USER_EVENT
 

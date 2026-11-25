@@ -17,7 +17,7 @@ public class ObjUncustomiseEncoder : ZoneProtEncoder<ObjUncustomise> {
         // making it easy to identify all the properties of this packet:
         // objUncustomise(level, x, z, id, count);
         buffer.p1(message.coordInZonePacked)
-        buffer.p2(message.id)
+        buffer.p4(message.id)
         buffer.p4(message.quantity)
     }
 }

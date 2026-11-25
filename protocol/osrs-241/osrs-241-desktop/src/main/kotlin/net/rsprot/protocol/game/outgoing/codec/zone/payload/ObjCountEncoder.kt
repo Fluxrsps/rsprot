@@ -17,7 +17,7 @@ public class ObjCountEncoder : ZoneProtEncoder<ObjCount> {
         // making it easy to identify all the properties of this packet:
         // obj_count(level, x, z, id, oldQuantity, newQuantity)
         buffer.p1Alt1(message.coordInZonePacked)
-        buffer.p2Alt3(message.id)
+        buffer.p4(message.id)
         buffer.p4Alt3(message.newQuantity)
         buffer.p4(message.oldQuantity)
     }

@@ -35,7 +35,7 @@ import net.rsprot.protocol.message.OutgoingGameMessage
  */
 @Suppress("DuplicatedCode")
 public class ObjAddSpecific private constructor(
-    private val _id: UShort,
+    private val _id: Int,
     public val quantity: Int,
     public val coordGrid: CoordGrid,
     public val opFlags: Byte,
@@ -54,7 +54,7 @@ public class ObjAddSpecific private constructor(
         ownershipType: Int,
         neverBecomesPublic: Boolean,
     ) : this(
-        id.toUShort(),
+        id,
         quantity,
         coordGrid,
         opFlags,
@@ -76,7 +76,7 @@ public class ObjAddSpecific private constructor(
         ownershipType: Int,
         neverBecomesPublic: Boolean,
     ) : this(
-        id.toUShort(),
+        id,
         quantity,
         CoordGrid(level, x, z),
         opFlags,
@@ -87,7 +87,7 @@ public class ObjAddSpecific private constructor(
     )
 
     public val id: Int
-        get() = _id.toInt()
+        get() = _id
     public val timeUntilPublic: Int
         get() = _timeUntilPublic.toInt()
     public val timeUntilDespawn: Int

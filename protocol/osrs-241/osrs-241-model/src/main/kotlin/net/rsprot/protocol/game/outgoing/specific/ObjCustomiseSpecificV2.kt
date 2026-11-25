@@ -31,7 +31,7 @@ public class ObjCustomiseSpecificV2(
         get() = GameServerProtCategory.HIGH_PRIORITY_PROT
 
     init {
-        require(id in 0..65535)
+        require(id >= 0)
         require(model in -1..65534)
         require(recolours.size <= 255 && retextures.size <= 255)
         require(recolours.all { (index, value) -> index in 0..255 && value in 0..65535 })
