@@ -91,6 +91,7 @@ public class Js5Service(
                                 configuration.missingGroupBehaviour,
                                 provider,
                                 configuration.blockSizeInBytes * ratio,
+                                configuration.prefetchTransferThresholdInBytes,
                             ) ?: continue
                         } catch (t: Throwable) {
                             logger.warn(t) {

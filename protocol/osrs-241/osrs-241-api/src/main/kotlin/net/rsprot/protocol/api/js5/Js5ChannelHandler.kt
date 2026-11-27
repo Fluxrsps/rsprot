@@ -80,7 +80,11 @@ public class Js5ChannelHandler(
                 js5Log(logger) {
                     "Priority changed to low in channel ${ctx.channel()}"
                 }
-                client.setLowPriority()
+                // Mutate the client under the service lock, as this may move prefetch requests
+                // between the queues that the service thread is concurrently reading from.
+                service.use {
+                    client.setLowPriority()
+                }
                 service.readIfNotFull(client)
                 // Furthermore, notify the client as we might've transferred prefetch over
                 service.notifyIfNotEmpty(client)
@@ -89,8 +93,13 @@ public class Js5ChannelHandler(
                 js5Log(logger) {
                     "Priority changed to high in channel ${ctx.channel()}"
                 }
-                client.setHighPriority()
+                service.use {
+                    client.setHighPriority()
+                }
                 service.readIfNotFull(client)
+                // Pending prefetch requests are now served on demand, notify the service in case
+                // the client only has throttled prefetch requests left.
+                service.notifyIfNotEmpty(client)
             }
             is XorChange -> {
                 js5Log(logger) {

@@ -40,6 +40,7 @@ public class Js5Client(
     private val awaitingPrefetch: IntArrayDeque = IntArrayDeque(INITIAL_QUEUE_SIZE)
     private val currentRequest: PartialJs5GroupRequest = PartialJs5GroupRequest()
     private var lowPriorityChangeCount: Int = 0
+    private var urgentHeadSkipCount: Int = 0
     public var priority: ClientPriority = ClientPriority.LOW
         private set
 
@@ -57,6 +58,9 @@ public class Js5Client(
      * @param blockLength the maximum size of a block to write in a single call.
      * If the number of bytes left in this group to write is less than the block,
      * then less bytes are written than expected.
+     * @param prefetchTransferThresholdInBytes the soft cap of prefetch bytes to move from the
+     * throttled prefetch collection over to the served one, whenever this client has nothing
+     * else to write. See [Js5Configuration.prefetchTransferThresholdInBytes].
      * @return a group response to write to the client, or null if none exists
      */
     public fun getNextBlock(
@@ -65,10 +69,11 @@ public class Js5Client(
         behaviour: Js5Configuration.Js5MissingGroupBehaviour,
         provider: Js5GroupProvider,
         blockLength: Int,
+        prefetchTransferThresholdInBytes: Int = Js5Configuration.DEFAULT_PREFETCH_TRANSFER_THRESHOLD_IN_BYTES,
     ): Js5GroupResponse? {
         var block: ByteBuf? = currentRequest.block
         if (block == null || currentRequest.isComplete()) {
-            val request = pop()
+            val request = pop(provider, prefetchTransferThresholdInBytes)
             if (request == -1) {
                 return null
             }
@@ -86,6 +91,7 @@ public class Js5Client(
                     behaviour,
                     provider,
                     blockLength,
+                    prefetchTransferThresholdInBytes,
                 )
             }
             js5Log(logger) {
@@ -111,6 +117,7 @@ public class Js5Client(
                             behaviour,
                             provider,
                             blockLength,
+                            prefetchTransferThresholdInBytes,
                         )
                     }
                     Js5Configuration.Js5MissingGroupBehaviour.DROP_CONNECTION -> {
@@ -179,19 +186,80 @@ public class Js5Client(
 
     /**
      * Pops a request from this client, prioritizing urgent requests before prefetch.
+     * Among the urgent requests, the smallest group is preferred (see [popUrgent]).
+     * If both the urgent and the prefetch queues are empty and the throttled prefetch
+     * requests may be drained on demand (see [canDrainAwaitingPrefetch]), up to
+     * [prefetchTransferThreshold] bytes of throttled prefetch requests are moved over first.
+     * @param provider the group provider, used to query group sizes
+     * @param prefetchTransferThreshold the soft cap of prefetch bytes to move over at a time
      * @return the bitpacked id of the request, or -1 if the queues are empty.
      */
-    private fun pop(): Int {
-        val urgent = urgent.removeFirstOrDefault(-1)
-        if (urgent != -1) {
-            return urgent
+    private fun pop(
+        provider: Js5GroupProvider,
+        prefetchTransferThreshold: Int,
+    ): Int {
+        if (urgent.isNotEmpty()) {
+            return popUrgent(provider)
+        }
+        if (prefetch.isEmpty() && canDrainAwaitingPrefetch()) {
+            moveAwaitingPrefetch(provider, prefetchTransferThreshold)
         }
         return prefetch.removeFirstOrDefault(-1)
     }
 
     /**
+     * Pops the next urgent request, preferring the smallest group among the first
+     * [URGENT_SIZE_SCAN_LIMIT] requests in the queue. As groups cannot be interleaved,
+     * a single large group blocks the connection until it has been fully written,
+     * so serving the small groups first means they do not have to wait behind
+     * multi-megabyte groups. To avoid starving a large group, the head of the queue is
+     * served unconditionally once it has been skipped over [MAX_URGENT_HEAD_SKIPS] times.
+     * @param provider the group provider, used to query group sizes
+     * @return the bitpacked id of the urgent request.
+     */
+    private fun popUrgent(provider: Js5GroupProvider): Int {
+        val count = min(urgent.size, URGENT_SIZE_SCAN_LIMIT)
+        if (count <= 1 || urgentHeadSkipCount >= MAX_URGENT_HEAD_SKIPS) {
+            urgentHeadSkipCount = 0
+            return urgent.removeFirst()
+        }
+        var bestIndex = 0
+        var bestSize = urgentSize(provider, urgent.get(0))
+        for (i in 1..<count) {
+            val size = urgentSize(provider, urgent.get(i))
+            if (size < bestSize) {
+                bestSize = size
+                bestIndex = i
+            }
+        }
+        if (bestIndex == 0) {
+            urgentHeadSkipCount = 0
+            return urgent.removeFirst()
+        }
+        urgentHeadSkipCount++
+        return urgent.removeAt(bestIndex)
+    }
+
+    /**
+     * Gets the size of an urgent request's group for scheduling purposes.
+     */
+    private fun urgentSize(
+        provider: Js5GroupProvider,
+        request: Int,
+    ): Int = provider.size(request ushr 16, request and 0xFFFF)
+
+    /**
+     * Whether the throttled prefetch requests may be moved over on-demand by the serving loop,
+     * whenever the client has nothing else to write. This is the case on the login screen and
+     * in-game. Before the client reaches the login screen, prefetch requests are only moved over
+     * periodically by the prefetch executor (see [transferPrefetch]), in order to give the urgent
+     * requests the whole connection during the initial load.
+     */
+    private fun canDrainAwaitingPrefetch(): Boolean = priority == HIGH || lowPriorityChangeCount >= 2
+
+    /**
      * Transfers [threshold] worth of bytes of prefetch requests to be served
-     * to the client.
+     * to the client, if the connection is effectively idle.
      * @param groupProvider the provider for JS5 group sizes, allowing for proper throttling
      * @param threshold the threshold at which the loop breaks, stopping any more bytes
      * being transmitted via prefetch than described here
@@ -211,7 +279,23 @@ public class Js5Client(
         ) {
             return false
         }
-        var transferredBytes = 0
+        return moveAwaitingPrefetch(groupProvider, threshold)
+    }
+
+    /**
+     * Moves throttled prefetch requests over to the served prefetch queue, until the sum
+     * of the moved groups' sizes reaches [threshold], or the throttled queue is empty.
+     * At least one request is always moved over if any exist.
+     * @param groupProvider the provider for JS5 group sizes
+     * @param threshold the soft cap on the sum of the moved groups' sizes
+     * @return whether any requests were moved over.
+     */
+    private fun moveAwaitingPrefetch(
+        groupProvider: Js5GroupProvider,
+        threshold: Int,
+    ): Boolean {
+        var transferredBytes = 0L
+        var transferredGroups = 0
         while (true) {
             val next = awaitingPrefetch.removeFirstOrDefault(-1)
             if (next == -1) {
@@ -219,16 +303,16 @@ public class Js5Client(
             }
             val archiveId = next ushr 16
             val groupId = next and 0xFFFF
-            val size = groupProvider.provide(archiveId, groupId)?.readableBytes() ?: 0
             prefetch.addLast(next)
-            transferredBytes += size
+            transferredGroups++
+            transferredBytes += groupProvider.size(archiveId, groupId)
             // Do not clog the pipeline with more than threshold of prefetch data at a time, as this results
             // in urgent requests being delayed
-            if (size >= threshold) {
+            if (transferredBytes >= threshold) {
                 break
             }
         }
-        return transferredBytes > 0
+        return transferredGroups > 0
     }
 
     /**
@@ -301,8 +385,13 @@ public class Js5Client(
 
     /**
      * Checks if the client is empty of any requests and has no pending request to still write.
+     * Throttled prefetch requests only count if the serving loop is allowed to drain them on demand.
      */
-    private fun isEmpty(): Boolean = currentRequest.isComplete() && urgent.isEmpty() && prefetch.isEmpty()
+    private fun isEmpty(): Boolean =
+        currentRequest.isComplete() &&
+            urgent.isEmpty() &&
+            prefetch.isEmpty() &&
+            (awaitingPrefetch.isEmpty() || !canDrainAwaitingPrefetch())
 
     /**
      * Checks that the client is not empty, meaning it has some requests, or a group is half-written.
@@ -407,6 +496,18 @@ public class Js5Client(
          * The maximum number of requests the client can send out per each group at a time.
          */
         private const val MAX_QUEUE_SIZE: Int = 200
+
+        /**
+         * The maximum number of urgent requests, from the head of the queue, whose sizes are compared
+         * when picking the next urgent request to serve. This caps the number of size queries per group.
+         */
+        private const val URGENT_SIZE_SCAN_LIMIT: Int = 32
+
+        /**
+         * The maximum number of times the head of the urgent queue can be skipped over in favour of
+         * a smaller group, before it is served regardless of its size.
+         */
+        private const val MAX_URGENT_HEAD_SKIPS: Int = 32
 
         /**
          * The number of invalid group logs that will still be warned about.

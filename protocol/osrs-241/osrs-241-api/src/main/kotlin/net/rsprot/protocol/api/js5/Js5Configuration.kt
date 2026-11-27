@@ -3,6 +3,12 @@ package net.rsprot.protocol.api.js5
 /**
  * The configuration for the JS5 service per client basis.
  * @property blockSizeInBytes the maximum number of bytes written per client per iteration
+ * of the JS5 service (the scheduling quantum, multiplied by [priorityRatio] for logged in clients).
+ * This is NOT tied to the wire framing: the 0xFF block separators every 512 bytes are baked into
+ * the group buffers ahead of time by [Js5Service.prepareJs5Buffer], and the service merely writes
+ * consecutive slices of those buffers, so any value may be used here. Larger values mean fewer
+ * service iterations (lock acquisitions and channel writes) per group, at the cost of coarser
+ * fairness between connected clients.
  * @property flushThresholdInBytes the minimum number of bytes that must be written into
  * the channel before a flush occurs. Note that the flush will only occur if at least one
  * group has been successfully written over, as there's no point in flushing a partial
@@ -36,6 +42,13 @@ package net.rsprot.protocol.api.js5
  * however this would mean the users will experience small loading screens even days into the gameplay.
  * Sweet spot is having as small delays as possible when the client requires urgent responses, but
  * still downloading the entire thing as soon as possible. 8,192 bytes appears to be that sweet spot.
+ * The numbers above apply to the period before the login screen, where the pending prefetch
+ * requests are only transferred periodically by the prefetch executor (every 200 milliseconds,
+ * and only while the connection is idle). Once the client reaches the login screen or logs in,
+ * pending prefetch requests are transferred by the serving loop itself, [prefetchTransferThresholdInBytes]
+ * at a time, whenever the client has no urgent requests and no prefetch requests left to serve.
+ * In that state, this value only dictates the batch size and does not limit the throughput;
+ * urgent requests are always served before any prefetch ones.
  * @property missingGroupBehaviour the behaviour type of what to do when the server returns a null
  * response for a group request. By default, we warn about it (up to 100 times before disabling warnings)
  * and drop that request. It should be noted that the client should never normally request for invalid
@@ -54,7 +67,7 @@ public class Js5Configuration public constructor(
     public val flushThresholdInBytes: Int = 10240,
     public val flushThresholdInRequests: Int = 10,
     public val priorityRatio: Int = 3,
-    public val prefetchTransferThresholdInBytes: Int = 8192,
+    public val prefetchTransferThresholdInBytes: Int = DEFAULT_PREFETCH_TRANSFER_THRESHOLD_IN_BYTES,
     public val missingGroupBehaviour: Js5MissingGroupBehaviour = Js5MissingGroupBehaviour.DROP_REQUEST,
 ) {
     init {
@@ -101,6 +114,13 @@ public class Js5Configuration public constructor(
             "prefetchTransferThresholdInBytes=$prefetchTransferThresholdInBytes, " +
             "missingGroupBehaviour=$missingGroupBehaviour" +
             ")"
+
+    public companion object {
+        /**
+         * The default value for [prefetchTransferThresholdInBytes].
+         */
+        public const val DEFAULT_PREFETCH_TRANSFER_THRESHOLD_IN_BYTES: Int = 8192
+    }
 
     public enum class Js5MissingGroupBehaviour {
         DROP_REQUEST,
