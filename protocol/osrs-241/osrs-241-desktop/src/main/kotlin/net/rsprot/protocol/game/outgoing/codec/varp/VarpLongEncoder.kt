@@ -17,6 +17,6 @@ public class VarpLongEncoder : MessageEncoder<VarpLong> {
     ) {
         buffer.p4Alt3((message.value ushr 32).toInt())
         buffer.p4Alt3(message.value.toInt())
-        buffer.p2(message.id)
+        buffer.p4(message.id)
     }
 }

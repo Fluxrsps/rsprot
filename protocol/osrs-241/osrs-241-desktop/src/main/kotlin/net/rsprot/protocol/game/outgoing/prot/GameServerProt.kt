@@ -103,9 +103,9 @@ public enum class GameServerProt(
     REBUILD_WORLDENTITY_V4(GameServerProtId.REBUILD_WORLDENTITY_V4, Prot.VAR_SHORT),
 
     // Varp packets
-    VARP_SMALL(GameServerProtId.VARP_SMALL, 3),
-    VARP_LARGE(GameServerProtId.VARP_LARGE, 6),
-    VARP_LONG(GameServerProtId.VARP_LONG, 10),
+    VARP_SMALL(GameServerProtId.VARP_SMALL, 5),
+    VARP_LARGE(GameServerProtId.VARP_LARGE, 8),
+    VARP_LONG(GameServerProtId.VARP_LONG, 12),
     VARP_RESET(GameServerProtId.VARP_RESET, 0),
     VARP_SYNC(GameServerProtId.VARP_SYNC, 0),
 

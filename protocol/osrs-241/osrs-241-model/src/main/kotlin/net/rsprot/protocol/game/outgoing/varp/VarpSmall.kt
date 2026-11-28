@@ -13,19 +13,17 @@ import net.rsprot.protocol.message.OutgoingGameMessage
  * @property value the value of the varp, in range of -128 to 127 (inclusive)
  */
 public class VarpSmall private constructor(
-    private val _id: UShort,
+    public val id: Int,
     private val _value: Byte,
 ) : OutgoingGameMessage {
     public constructor(
         id: Int,
         value: Int,
     ) : this(
-        id.toUShort(),
+        id,
         value.toByte(),
     )
 
-    public val id: Int
-        get() = _id.toInt()
     public val value: Int
         get() = _value.toInt()
     override val category: ServerProtCategory
@@ -37,14 +35,14 @@ public class VarpSmall private constructor(
 
         other as VarpSmall
 
-        if (_id != other._id) return false
+        if (id != other.id) return false
         if (_value != other._value) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = _id.hashCode()
+        var result = id.hashCode()
         result = 31 * result + _value
         return result
     }
